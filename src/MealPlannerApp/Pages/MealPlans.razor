@@ -1,0 +1,77 @@
+@page "/mealplans"
+@using MealPlannerShared.Models
+@inject HttpClient Http
+
+<h3 class="mb-3" style="color: white;">Meal Plans</h3>
+
+<div class="row">
+    <div class="col-md-4">
+        <EditForm Model="newPlan" OnValidSubmit="CreateMealPlan">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="mb-2">
+                <label>Date</label>
+                <InputDate class="form-control" @bind-Value="newPlan.Date" />
+            </div>
+            <button class="btn btn-primary">Add Meal Plan</button>
+        </EditForm>
+    </div>
+    <div class="col-md-8">
+        <table class="table table-sm table-hover">
+            <thead><tr><th>Date</th><th>Recipes</th></tr></thead>
+            <tbody>
+                @if (plans == null)
+                {
+                    <tr><td colspan="2">Loading...</td></tr>
+                }
+                else if (!plans.Any())
+                {
+                    <tr><td colspan="2" class="text-muted">No meal plans yet.</td></tr>
+                }
+                else
+                {
+                    @foreach (var p in plans)
+                    {
+                        <tr>
+                            <td>@p.Date.ToString()</td>
+                            <td>
+                                @if (p.MealPlanRecipes?.Any() == true)
+                                {
+                                    @foreach (var r in p.MealPlanRecipes)
+                                    {
+                                        <span class="badge bg-secondary me-1">@r.MealType: @r.Recipe?.Name</span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="text-muted">None</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    private List<MealPlan>? plans;
+    private MealPlan newPlan = new(){ Date = DateOnly.FromDateTime(DateTime.Today) };
+
+    protected override async Task OnInitializedAsync()
+    {
+        plans = await Http.GetFromJsonAsync<List<MealPlan>>("api/mealplans");
+    }
+
+    private async Task CreateMealPlan()
+    {
+        var resp = await Http.PostAsJsonAsync("api/mealplans", newPlan);
+        if (resp.IsSuccessStatusCode)
+        {
+            newPlan = new(){ Date = DateOnly.FromDateTime(DateTime.Today) };
+            plans = await Http.GetFromJsonAsync<List<MealPlan>>("api/mealplans");
+            StateHasChanged();
+        }
+    }
+}

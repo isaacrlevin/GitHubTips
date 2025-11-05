@@ -1,0 +1,58 @@
+name: .NET Build
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore src/MealPlanner.sln
+
+    - name: Build solution
+      run: dotnet build src/MealPlanner.sln --no-restore --configuration Release
+
+    - name: Run tests
+      run: dotnet test src/MealPlanner.sln --no-build --configuration Release --verbosity normal
+
+    - name: Publish API
+      if: matrix.os == 'ubuntu-latest'
+      run: dotnet publish src/MealPlannerApi/MealPlannerApi.csproj --configuration Release --output ./publish/api
+
+    - name: Publish Client
+      if: matrix.os == 'ubuntu-latest'
+      run: dotnet publish src/MealPlannerApp/MealPlannerApp.csproj --configuration Release --output ./publish/client
+
+    - name: Upload API artifact
+      if: matrix.os == 'ubuntu-latest'
+      uses: actions/upload-artifact@v5
+      with:
+        name: mealplanner-api
+        path: ./publish/api
+        retention-days: 7
+
+    - name: Upload Client artifact
+      if: matrix.os == 'ubuntu-latest'
+      uses: actions/upload-artifact@v5
+      with:
+        name: mealplanner-client
+        path: ./publish/client
+        retention-days: 7

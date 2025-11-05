@@ -1,0 +1,84 @@
+@page "/ingredients"
+@using MealPlannerShared.Models
+@inject HttpClient Http
+
+<h3 class="mb-3" style="color: white;">Ingredients</h3>
+
+<div class="row">
+    <div class="col-md-5">
+        <EditForm Model="newIngredient" OnValidSubmit="CreateIngredient">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="mb-2">
+                <label>Name</label>
+                <InputText class="form-control" @bind-Value="newIngredient.Name" />
+            </div>
+            <div class="mb-2">
+                <label>Unit (optional)</label>
+                <InputText class="form-control" @bind-Value="newIngredient.Unit" />
+            </div>
+            <button class="btn btn-primary">Add Ingredient</button>
+        </EditForm>
+    </div>
+    <div class="col-md-7">
+        <table class="table table-sm table-striped">
+            <thead>
+                <tr><th>Name</th><th>Unit</th><th></th></tr>
+            </thead>
+            <tbody>
+                @if (ingredients == null)
+                {
+                    <tr><td colspan="3">Loading...</td></tr>
+                }
+                else if (!ingredients.Any())
+                {
+                    <tr><td colspan="3" class="text-muted">No ingredients yet.</td></tr>
+                }
+                else
+                {
+                    @foreach (var i in ingredients)
+                    {
+                        <tr>
+                            <td>@i.Name</td>
+                            <td>@i.Unit</td>
+                            <td class="text-end">
+                                <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteIngredient(i.Id)">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    private List<Ingredient>? ingredients;
+    private Ingredient newIngredient = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        ingredients = await Http.GetFromJsonAsync<List<Ingredient>>("api/ingredients");
+    }
+
+    private async Task CreateIngredient()
+    {
+        var resp = await Http.PostAsJsonAsync("api/ingredients", newIngredient);
+        if (resp.IsSuccessStatusCode)
+        {
+            newIngredient = new();
+            ingredients = await Http.GetFromJsonAsync<List<Ingredient>>("api/ingredients");
+            StateHasChanged();
+        }
+    }
+
+    private async Task DeleteIngredient(int id)
+    {
+        var resp = await Http.DeleteAsync($"api/ingredients/{id}");
+        if (resp.IsSuccessStatusCode)
+        {
+            ingredients = await Http.GetFromJsonAsync<List<Ingredient>>("api/ingredients");
+            StateHasChanged();
+        }
+    }
+}

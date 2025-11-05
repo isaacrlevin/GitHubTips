@@ -1,0 +1,79 @@
+@page "/recipes"
+@using MealPlannerShared.Models
+@inject HttpClient Http
+
+<h3 class="mb-3" style="color: white;">Recipes</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <EditForm Model="newRecipe" OnValidSubmit="CreateRecipe">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="mb-2">
+                <label>Name</label>
+                <InputText class="form-control" @bind-Value="newRecipe.Name" />
+            </div>
+            <div class="mb-2">
+                <label>Description</label>
+                <InputTextArea class="form-control" @bind-Value="newRecipe.Description" />
+            </div>
+            <button class="btn btn-primary">Add Recipe</button>
+        </EditForm>
+    </div>
+    <div class="col-md-6">
+        <div class="list-group">
+            @if (recipes == null)
+            {
+                <div>Loading...</div>
+            }
+            else if (!recipes.Any())
+            {
+                <div class="text-muted">No recipes yet.</div>
+            }
+            else
+            {
+                @foreach (var r in recipes)
+                {
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>@r.Name</strong><br />
+                            <small class="text-muted">@r.Description</small>
+                        </div>
+                        <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteRecipe(r.Id)">Delete</button>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<Recipe>? recipes;
+    private Recipe newRecipe = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        recipes = await Http.GetFromJsonAsync<List<Recipe>>("api/recipes");
+    }
+
+    private async Task CreateRecipe()
+    {
+        var resp = await Http.PostAsJsonAsync("api/recipes", newRecipe);
+        if (resp.IsSuccessStatusCode)
+        {
+            newRecipe = new();
+            recipes = await Http.GetFromJsonAsync<List<Recipe>>("api/recipes");
+            StateHasChanged();
+        }
+    }
+
+    private async Task DeleteRecipe(int id)
+    {
+        var resp = await Http.DeleteAsync($"api/recipes/{id}");
+        if (resp.IsSuccessStatusCode)
+        {
+            recipes = await Http.GetFromJsonAsync<List<Recipe>>("api/recipes");
+            StateHasChanged();
+        }
+    }
+}

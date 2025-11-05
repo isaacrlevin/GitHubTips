@@ -1,0 +1,28 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "build-all",
+			"type": "shell",
+			"command": "dotnet build src/MealPlanner.sln",
+			"problemMatcher": [
+				"$msCompile"
+			],
+			"group": "build"
+		},
+		{
+			"label": "run-api",
+			"type": "shell",
+			"command": "dotnet run --project src/MealPlannerApi/MealPlannerApi.csproj",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "run-client",
+			"type": "shell",
+			"command": "dotnet run --project src/MealPlannerApp/MealPlannerApp.csproj",
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}

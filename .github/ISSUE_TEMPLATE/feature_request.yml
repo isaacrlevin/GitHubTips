@@ -1,0 +1,27 @@
+name: Feature request
+description: Suggest an enhancement or new capability
+title: "[Feature]: "
+labels: [enhancement]
+body:
+	- type: textarea
+		id: problem
+		attributes:
+			label: Problem Statement
+			description: What challenge are you facing?
+			placeholder: Describe the problem
+	- type: textarea
+		id: solution
+		attributes:
+			label: Proposed Solution
+			description: What would you like implemented?
+			placeholder: Describe solution idea(s)
+	- type: textarea
+		id: alternatives
+		attributes:
+			label: Alternatives Considered
+			description: Other approaches or workarounds
+	- type: textarea
+		id: additional
+		attributes:
+			label: Additional Context
+			description: Extra details, links, screenshots

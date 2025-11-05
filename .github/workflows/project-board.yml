@@ -1,0 +1,15 @@
+name: Project Board
+on:
+  issues:
+    types: [opened, edited, closed]
+  pull_request:
+    types: [opened, edited, closed]
+jobs:
+  add-to-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add issue/PR to GitHub Project
+        uses: actions/add-to-project@v1.0.2
+        with:
+          project-url: ${{ secrets.PROJECT_URL }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
