@@ -93,9 +93,11 @@ public class VulnerableController : ControllerBase
     {
         // Vulnerable: Deserializing untrusted data
         var bytes = Convert.FromBase64String(serializedData);
+#pragma warning disable SYSLIB0011
         var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
         using var stream = new MemoryStream(bytes);
         var obj = formatter.Deserialize(stream);
+#pragma warning restore SYSLIB0011
         
         return Ok(obj);
     }
@@ -119,7 +121,7 @@ public class VulnerableController : ControllerBase
 
     // Unvalidated redirect
     [HttpGet("redirect")]
-    public IActionResult Redirect(string url)
+    public new IActionResult Redirect(string url)
     {
         // Vulnerable: Open redirect
         return Redirect(url);
