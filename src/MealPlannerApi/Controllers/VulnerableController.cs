@@ -23,12 +23,12 @@ public class VulnerableController : ControllerBase
         var connectionString = "Server=myserver;Database=mydb;User Id=sa;Password=admin123;";
         using var connection = new SqlConnection(connectionString);
         connection.Open();
-        
+
         // Vulnerable: Direct string concatenation in SQL query
         var query = $"SELECT * FROM Users WHERE Username = '{username}'";
         var command = new SqlCommand(query, connection);
         var reader = command.ExecuteReader();
-        
+
         return Ok("User found");
     }
 
@@ -39,12 +39,12 @@ public class VulnerableController : ControllerBase
         // Vulnerable: Hardcoded credentials
         const string adminPassword = "SuperSecret123!";
         const string apiKey = "sk_live_51234567890abcdef";
-        
+
         if (request.Password == adminPassword)
         {
             return Ok(new { token = apiKey });
         }
-        
+
         return Unauthorized();
     }
 
@@ -64,13 +64,13 @@ public class VulnerableController : ControllerBase
     {
         // Vulnerable: No validation on filename
         var filePath = Path.Combine("uploads", filename);
-        
+
         if (System.IO.File.Exists(filePath))
         {
             var content = System.IO.File.ReadAllText(filePath);
             return Ok(content);
         }
-        
+
         return NotFound();
     }
 
@@ -83,7 +83,7 @@ public class VulnerableController : ControllerBase
         process.StartInfo.FileName = "ping";
         process.StartInfo.Arguments = host;
         process.Start();
-        
+
         return Ok("Ping started");
     }
 
@@ -98,7 +98,7 @@ public class VulnerableController : ControllerBase
         using var stream = new MemoryStream(bytes);
         var obj = formatter.Deserialize(stream);
 #pragma warning restore SYSLIB0011
-        
+
         return Ok(obj);
     }
 
@@ -115,7 +115,7 @@ public class VulnerableController : ControllerBase
             JwtSecret = "my-super-secret-jwt-key-12345",
             ConnectionString = "Server=prod-db;Database=main;User Id=admin;Password=Pr0dP@ssw0rd;"
         };
-        
+
         return Ok(config);
     }
 
