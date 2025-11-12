@@ -1,10 +1,13 @@
 # 🍽️ Meal Planner
 
 [![.NET Build](https://github.com/isaacrlevin/MealPlanner/workflows/.NET%20Build/badge.svg)](https://github.com/isaacrlevin/MealPlanner/actions)
+[![CodeQL](https://github.com/isaacrlevin/GitHubTips/workflows/CodeQL%20Security%20Analysis/badge.svg)](https://github.com/isaacrlevin/GitHubTips/actions/workflows/codeql.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/isaacrlevin/MealPlanner/releases)
 
 A modern, full-stack meal planning application built with **Blazor WebAssembly** and **ASP.NET Core**. Plan your meals, manage ingredients, organize recipes, and streamline your weekly cooking with a beautiful, responsive UI.
+
+> **🔒 Security First**: This repository showcases [GitHub Advanced Security](docs/GITHUB_ADVANCED_SECURITY.md) features including CodeQL analysis, secret scanning, and dependency review.
 
 ![Meal Planner Screenshot](docs/screenshot.png)
 
@@ -161,7 +164,18 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for deta
 
 ## 🔒 Security
 
-For security concerns, please see [SECURITY.md](SECURITY.md) for our security policy and how to report vulnerabilities.
+This repository uses **GitHub Advanced Security** to maintain high security standards:
+
+- **Code Scanning**: Automated CodeQL analysis detects security vulnerabilities
+- **Secret Scanning**: Prevents credentials from being committed
+- **Dependency Review**: Blocks vulnerable dependencies in pull requests
+- **Dependabot**: Automated security updates for dependencies
+
+**Learn more:**
+- 📖 [GitHub Advanced Security Overview](docs/GITHUB_ADVANCED_SECURITY.md)
+- 🚀 [GHAS Setup Guide](docs/GHAS_SETUP_GUIDE.md)
+- 🔐 [Security Policy](SECURITY.md) - Report vulnerabilities
+- 📝 [Example Vulnerable Code](src/MealPlannerApi/Examples/VulnerableCodeExamples.cs) - For CodeQL testing
 
 ## 📋 Roadmap
 

@@ -1,5 +1,22 @@
 # Security Policy
 
+## 🔒 GitHub Advanced Security
+
+This repository uses **GitHub Advanced Security** to maintain high security standards:
+
+- **Code Scanning (CodeQL)**: Automated detection of security vulnerabilities in code
+- **Secret Scanning**: Prevents credentials and tokens from being committed
+- **Dependency Review**: Identifies vulnerable dependencies in pull requests
+- **Dependabot**: Automated security updates for dependencies
+
+**Learn more:**
+- [GHAS Overview](docs/GITHUB_ADVANCED_SECURITY.md)
+- [Setup Guide](docs/GHAS_SETUP_GUIDE.md)
+- [Quick Reference](docs/GHAS_QUICK_REFERENCE.md)
+- [Demo Script](docs/GHAS_DEMO_SCRIPT.md)
+
+---
+
 ## Supported Versions
 
 We release security updates for the following versions:

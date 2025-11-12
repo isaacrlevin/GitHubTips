@@ -1,0 +1,44 @@
+name: Dependency Review
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          # Fail the build if there are any vulnerabilities with severity high or critical
+          fail-on-severity: high
+
+          # Fail if any dependencies have incompatible licenses
+          deny-licenses: GPL-3.0, LGPL-2.0, AGPL-3.0
+
+          # Allow only these licenses
+          allow-licenses: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC
+
+          # Comment on PR with detailed results
+          comment-summary-in-pr: always
+
+          # Warn on moderate vulnerabilities
+          warn-on-severity: moderate
+
+          # Show only production dependencies
+          # dependency-scopes: runtime,unknown
+
+      - name: Upload SARIF results
+        if: always()
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: dependency-review.sarif
