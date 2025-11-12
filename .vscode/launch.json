@@ -1,0 +1,59 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-api",
+            "program": "${workspaceFolder}/src/MealPlannerApi/bin/Debug/net9.0/MealPlannerApi.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/MealPlannerApi",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "http://localhost:5062"
+            },
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Launch App",
+            "type": "blazorwasm",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/src/MealPlannerApp",
+            "browser": "edge",
+            "timeout": 120000,
+            "url": "http://localhost:5000"
+        },
+        {
+            "name": "Launch API & App",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-solution",
+            "program": "${workspaceFolder}/src/MealPlannerApi/bin/Debug/net9.0/MealPlannerApi.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/MealPlannerApi",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
+                "uriFormat": "http://localhost:5062"
+            },
+            "postDebugTask": "run-app"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Debug Full Stack",
+            "configurations": ["Launch API", "Launch App"],
+            "stopAll": true,
+            "preLaunchTask": "build-solution",
+            "presentation": {
+                "order": 1
+            }
+        }
+    ]
+}

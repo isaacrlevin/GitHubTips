@@ -1,28 +1,122 @@
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"label": "build-all",
-			"type": "shell",
-			"command": "dotnet build src/MealPlanner.sln",
-			"problemMatcher": [
-				"$msCompile"
-			],
-			"group": "build"
-		},
-		{
-			"label": "run-api",
-			"type": "shell",
-			"command": "dotnet run --project src/MealPlannerApi/MealPlannerApi.csproj",
-			"isBackground": true,
-			"problemMatcher": []
-		},
-		{
-			"label": "run-client",
-			"type": "shell",
-			"command": "dotnet run --project src/MealPlannerApp/MealPlannerApp.csproj",
-			"isBackground": true,
-			"problemMatcher": []
-		}
-	]
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-api",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/MealPlannerApi/MealPlannerApi.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": "build"
+        },
+        {
+            "label": "build-app",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/MealPlannerApp/MealPlannerApp.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": "build"
+        },
+        {
+            "label": "build-solution",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/MealPlanner.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "watch-api",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "--project",
+                "${workspaceFolder}/src/MealPlannerApi/MealPlannerApi.csproj"
+            ],
+            "problemMatcher": {
+                "base": "$msCompile",
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^\\s*Building",
+                    "endsPattern": "^\\s*Application started\\.|Now listening on:"
+                }
+            },
+            "isBackground": true
+        },
+        {
+            "label": "watch-app",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "--project",
+                "${workspaceFolder}/src/MealPlannerApp/MealPlannerApp.csproj"
+            ],
+            "problemMatcher": {
+                "base": "$msCompile",
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": "^\\s*Building",
+                    "endsPattern": "webpack compiled|Content root path:"
+                }
+            },
+            "isBackground": true
+        },
+        {
+            "label": "run-api",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "run",
+                "--project",
+                "${workspaceFolder}/src/MealPlannerApi/MealPlannerApi.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            "isBackground": true,
+            "group": "none"
+        },
+        {
+            "label": "run-app",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "run",
+                "--project",
+                "${workspaceFolder}/src/MealPlannerApp/MealPlannerApp.csproj"
+            ],
+            "problemMatcher": "$msCompile",
+            "isBackground": true,
+            "group": "none"
+        },
+        {
+            "label": "run-all",
+            "dependsOn": [
+                "run-api",
+                "run-app"
+            ],
+            "problemMatcher": [],
+            "group": "none"
+        }
+    ]
 }
