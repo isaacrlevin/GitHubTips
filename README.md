@@ -1,12 +1,12 @@
 # 🍽️ Meal Planner
 
-[![.NET Build](https://github.com/isaacrlevin/MealPlanner/workflows/.NET%20Build/badge.svg)](https://github.com/isaacrlevin/MealPlanner/actions)
+[![.NET Build](https://github.com/isaacrlevin/GitHubTips/actions/workflows/ci.yml/badge.svg)](https://github.com/isaacrlevin/GitHubTips/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/badge/version-0.1.0-blue.svg)](https://github.com/isaacrlevin/MealPlanner/releases)
 
 A modern, full-stack meal planning application built with **Blazor WebAssembly** and **ASP.NET Core**. Plan your meals, manage ingredients, organize recipes, and streamline your weekly cooking with a beautiful, responsive UI.
 
-![Meal Planner Screenshot](docs/screenshot.png)
+![Meal Planner Screenshot](screenshot.png)
 
 > **Note**: Replace `isaacrlevin` in badge URLs with your GitHub username.
 
